@@ -3,8 +3,13 @@
 Static site: `index.html`, `styles.css`, `main.js`. No build step.
 
 ## Edit
-All copy lives in `index.html`: the hero, five story chapters (each with stats and a "What it taught me" line),
-the 39 → 19 day demo, "The short version" list, and contact. The email is the `data-email` on the copy button.
+All copy lives in `index.html`: the hero, five story chapters (each with stats, a "What it taught me" line and an
+"In hindsight" margin note), the 39 → 19 day demo, "The short version" list, "Notes on stuck spots", and contact.
+The email is the `data-email` on the copy button. Anything marked `DRAFT` in a comment was written for you to confirm or rewrite.
+
+If you change a chapter title or lesson, rebuild the chapter share pages and preview images (needs Chrome):
+
+    python3 tools/share-pages.py
 
 ## Run locally
     python3 -m http.server 4321 -d site
@@ -34,3 +39,8 @@ redeploys connorlennon.com in about a minute. `wrangler.jsonc` in the repo root 
 - Select any line in the story: it gets the marker and a "Send Connor this line" chip (a pre-filled mailto).
 - Marker highlights sweep in as each chapter is read. Stats are static on purpose: numbers that just sit there read as more credible.
 - Mobile floor: `viewport-fit=cover`, safe-area padding, `svh`, per-scheme `theme-color`, no tap highlight.
+- Fonts are self-hosted in `fonts/` (Inter, Instrument Serif; both SIL Open Font License). No third-party requests.
+- Small grey text uses `--faint-text` (4.5:1 contrast or better); `--faint` is for hairlines and dots only.
+- Each chapter has a share address (`/truist/`, `/limerick/` …) with its own preview image in `og/`. The link icon in a chapter's kicker copies it.
+- Printing the page (Cmd+P) gives "The short version" as a one-page résumé. See `@media print` at the end of `styles.css`.
+- "Looking for something?" appears once per visit if someone scrolls back and forth four times in 12 seconds, or idles 25 seconds at the very bottom.

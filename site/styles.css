@@ -7,11 +7,38 @@
    blur to bridge crossfades, reduced motion = opacity only.
    ───────────────────────────────────────────── */
 
+/* Fonts are served from this site (no third-party request). Both are SIL Open Font License. */
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/instrument-serif-italic-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/instrument-serif-normal-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("fonts/inter-normal-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   --bg: #fbfaf7;
   --fg: #141413;
   --muted: #6b6a66;
-  --faint: #a3a19b;
+  --faint: #a3a19b;           /* hairlines and dots only */
+  --faint-text: #706e69;      /* small grey text, 4.5:1 or better on paper */
   --line: rgba(20, 20, 19, 0.1);
   --hover: rgba(20, 20, 19, 0.045);
   --card: #ffffff;
@@ -38,6 +65,7 @@
     --fg: #ecebe8;
     --muted: #93918b;
     --faint: #5e5d59;
+    --faint-text: #86847e;
     --line: rgba(255, 255, 255, 0.09);
     --hover: rgba(255, 255, 255, 0.05);
     --card: #151516;
@@ -56,6 +84,7 @@
   --fg: #ecebe8;
   --muted: #93918b;
   --faint: #5e5d59;
+  --faint-text: #86847e;
   --line: rgba(255, 255, 255, 0.09);
   --hover: rgba(255, 255, 255, 0.05);
   --card: #151516;
@@ -63,7 +92,7 @@
   --tab-active-bg: #ecebe8;
   --tab-active-fg: #0c0c0d;
   --accent: #7c9cff;
-    --mark-stroke: #2b59c3;
+  --mark-stroke: #2b59c3;
   --accent-soft: rgba(124, 156, 255, 0.2);
   --live: #3ccf7c;
   color-scheme: dark;
@@ -114,8 +143,18 @@ a { color: inherit; }
     max(20px, env(safe-area-inset-left));
 }
 
+.skip {
+  position: absolute; left: 12px; top: 12px; z-index: 30;
+  padding: 8px 14px; border-radius: 10px;
+  background: var(--fg); color: var(--bg);
+  font-size: 14px; font-weight: 500; text-decoration: none;
+  transform: translateY(-200%);
+}
+.skip:focus-visible { transform: none; }
+.print-only { display: none; }
+
 .muted { color: var(--muted); margin: 0; }
-.label { margin: 0 0 12px; font-size: 13px; font-weight: 500; color: var(--faint); }
+.label { margin: 0 0 12px; font-size: 13px; font-weight: 500; color: var(--faint-text); }
 
 /* ───── Header ───── */
 .header { display: flex; align-items: center; gap: 12px; }
@@ -274,7 +313,7 @@ a { color: inherit; }
 .stop { margin-bottom: 8px; }
 .city { font-size: 13px; color: var(--muted); transition: color 150ms ease; }
 .route [aria-current] .city { color: var(--fg); font-weight: 500; }
-.co { font-size: 11.5px; color: var(--faint); line-height: 1.3; }
+.co { font-size: 11.5px; color: var(--faint-text); line-height: 1.3; }
 @media (max-width: 480px) { .co { display: none; } }
 
 /* ───── Tabs (clip-path duplicate technique) ───── */
@@ -303,6 +342,13 @@ a { color: inherit; }
   transition: clip-path 280ms var(--ease-in-out);
 }
 .tab-list--active span { color: var(--tab-active-fg); }
+.tab-list .tab-time {
+  display: inline; padding: 0; margin-left: 3px;
+  font-size: 12px; font-weight: 400; line-height: inherit;
+  color: inherit; opacity: 0.72;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 359px) { .tab-list .tab-time { display: none; } }
 .tabs[data-instant] .tab-list--active { transition-duration: 0ms; }
 
 @keyframes panel-in { from { opacity: 0; filter: blur(3px); transform: translateY(4px); } }
@@ -367,7 +413,7 @@ a { color: inherit; }
 .kicker {
   margin: 0 0 8px;
   display: flex; align-items: center; gap: 10px;
-  font-size: 13px; color: var(--faint);
+  font-size: 13px; color: var(--faint-text);
   font-variant-numeric: tabular-nums;
 }
 .ch {
@@ -377,6 +423,28 @@ a { color: inherit; }
   color: var(--muted);
   font-size: 12px; font-weight: 500;
 }
+/* Copy a link to one chapter. Each has its own address and preview image (see /tools). */
+.share {
+  position: relative;
+  margin: -6px -7px -6px auto;
+  width: 28px; height: 28px;
+  display: grid; place-items: center;
+  border: 0; border-radius: 8px;
+  background: transparent; color: var(--faint-text);
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out), background-color 150ms ease, color 150ms ease;
+}
+.share:active { transform: scale(0.94); }
+.share-done {
+  position: absolute; right: calc(100% + 4px); top: 50%;
+  font-size: 12px; font-weight: 500; color: var(--muted); white-space: nowrap;
+  opacity: 0; transform: translate(4px, -50%);
+  transition: opacity 180ms ease, transform 200ms var(--ease-out);
+  pointer-events: none;
+}
+.share[data-state="done"] { color: var(--live); }
+.share[data-state="done"] .share-done { opacity: 1; transform: translate(0, -50%); }
+
 .chapter h2 {
   margin: 0 0 14px;
   font-family: var(--serif);
@@ -450,7 +518,38 @@ a { color: inherit; }
   font-family: var(--font);
   font-style: normal;
   font-size: 12px; font-weight: 500;
-  color: var(--faint);
+  color: var(--faint-text);
+}
+
+/* In hindsight: a note in the same ink as the pen line. In the margin when there's room. */
+.hindsight {
+  margin: 16px 0 0;
+  padding-left: 18px;
+  max-width: 44ch;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.3;
+  color: var(--accent);
+  text-wrap: pretty;
+}
+.hindsight-label {
+  display: block;
+  margin-bottom: 2px;
+  font-family: var(--font);
+  font-style: normal;
+  font-size: 12px; font-weight: 500;
+  color: var(--faint-text);
+}
+@media (min-width: 1100px) {
+  .hindsight {
+    position: absolute;
+    right: calc(100% + 58px); bottom: 8px;
+    width: 176px;
+    margin: 0; padding: 0;
+    transform: rotate(-1.5deg);
+    transform-origin: 100% 100%;
+  }
 }
 
 /* ───── The shrinking-wait demo ───── */
@@ -518,10 +617,86 @@ a { color: inherit; }
 .row:first-child { padding-top: 0; }
 .row-title { font-weight: 500; letter-spacing: -0.01em; min-width: 0; }
 .row-sub { grid-column: 1 / -1; color: var(--muted); font-size: 14px; }
-.row-meta { grid-row: 1; grid-column: 2; color: var(--faint); font-size: 13.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.row-meta { grid-row: 1; grid-column: 2; color: var(--faint-text); font-size: 13.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.row-proof { grid-column: 1 / -1; margin-top: 4px; color: var(--muted); font-size: 13.5px; line-height: 1.5; max-width: 62ch; text-wrap: pretty; }
 .tags-label { margin-top: 32px; }
 .tags { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .tags li { padding: 4px 11px; border-radius: 999px; background: var(--hover); font-size: 13px; color: var(--muted); }
+
+/* ───── Notes ───── */
+.section-title {
+  margin: 0 0 6px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(27px, 5.6vw, 32px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+.section-sub { margin: 0 0 20px; color: var(--muted); }
+.note { border-bottom: 1px solid var(--line); }
+.note:first-of-type { border-top: 1px solid var(--line); }
+.note summary {
+  display: flex; align-items: baseline; gap: 14px;
+  padding: 14px 0;
+  cursor: pointer;
+  list-style: none;
+  border-radius: 6px;
+  user-select: none; -webkit-user-select: none;
+}
+.note summary::-webkit-details-marker { display: none; }
+.note-title { flex: 1; font-family: var(--serif); font-size: 23px; line-height: 1.15; transition: color 150ms ease; }
+.note-time { font-size: 13px; color: var(--faint-text); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.note summary::after {
+  content: "+";
+  width: 14px; text-align: center;
+  font-size: 18px; line-height: 1; color: var(--muted);
+  transition: transform 220ms var(--ease-out);
+}
+.note[open] summary::after { transform: rotate(45deg); }
+.note-body { padding: 0 0 8px; }
+.note-body p { margin: 0 0 14px; color: var(--muted); max-width: 65ch; text-wrap: pretty; }
+.note[open] .note-body { animation: panel-in 260ms var(--ease-out); }
+
+/* ───── "Looking for something?" Shown once if a visitor seems stuck ───── */
+.unstick {
+  position: fixed; z-index: 15;
+  left: 50%; bottom: calc(16px + env(safe-area-inset-bottom));
+  width: max-content; max-width: calc(100vw - 24px);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px;
+  padding: 6px 6px 6px 16px;
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--card) 94%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: var(--card-shadow);
+  font-size: 13.5px;
+  opacity: 0;
+  transform: translate(-50%, 10px) scale(0.97);
+  transition: opacity 200ms ease, transform 260ms var(--ease-out);
+}
+.unstick[hidden] { display: none; }
+.unstick.is-on { opacity: 1; transform: translate(-50%, 0); }
+.unstick p { margin: 0 8px 0 0; color: var(--muted); }
+.unstick a, .unstick [data-unstick] {
+  padding: 6px 11px;
+  border: 0; border-radius: 999px;
+  background: var(--hover);
+  color: var(--fg);
+  font-size: inherit; font-weight: 500; line-height: 20px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out), background-color 150ms ease;
+}
+.unstick a:active, .unstick [data-unstick]:active { transform: scale(0.97); }
+.unstick-close {
+  width: 32px; height: 32px;
+  display: grid; place-items: center;
+  border: 0; border-radius: 999px;
+  background: transparent; color: var(--muted);
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out), background-color 150ms ease, color 150ms ease;
+}
+.unstick-close:active { transform: scale(0.94); }
 
 /* ───── Highlight a line, send it over ───── */
 .story ::selection { background: var(--accent-soft); color: var(--fg); }
@@ -614,7 +789,7 @@ a { color: inherit; }
   margin-top: 72px; padding-top: 20px;
   border-top: 1px solid var(--line);
   display: flex; justify-content: space-between; align-items: center; gap: 16px;
-  font-size: 13px; color: var(--faint);
+  font-size: 13px; color: var(--faint-text);
 }
 .footer-left { display: flex; flex-direction: column; line-height: 1.5; }
 .sig {
@@ -650,6 +825,10 @@ a { color: inherit; }
   .route a:hover .co { color: var(--muted); }
   .scribble { cursor: pointer; }
   .quote-chip:hover span { transform: translate(1px, -1px); }
+  .share:hover { background: var(--hover); color: var(--fg); }
+  .note summary:hover .note-title { color: var(--accent); }
+  .unstick a:hover, .unstick [data-unstick]:hover { background: var(--line); }
+  .unstick-close:hover { background: var(--hover); color: var(--fg); }
   .next-link:hover { text-underline-offset: 6px; }
   .next-link:hover span { transform: translateY(2px); }
   .sig:hover { color: var(--fg); }
@@ -704,13 +883,48 @@ a { color: inherit; }
   .js .header .mark .knot, .js .lost .mark .knot, .now .dot, .scribble.is-jiggling, .scribble.is-jiggling path { animation: none; }
   .js .chapter mark { transition: none; background-size: 100% 0.5em; }
   .quote-band { animation: fade-in 200ms ease both; }
+  .note[open] .note-body { animation: fade-in 200ms ease; }
+  .note summary::after, .skip { transition: none; }
+  .share-done, .share[data-state="done"] .share-done { transform: translate(0, -50%); }
+  .hindsight { transform: none; }
+  .unstick, .unstick.is-on { transform: translateX(-50%); }
   .quote-chip, .quote-chip.is-on, .quote-chip:active { transform: none; }
 }
 
 /* ───── Résumé download ───── */
 .resume { margin-top: 32px; padding: 0 16px; }
-.resume-meta { font-size: 12.5px; font-weight: 400; color: var(--faint); }
+.resume-meta { font-size: 12.5px; font-weight: 400; color: var(--faint-text); }
 .resume svg { color: var(--muted); transition: transform 200ms var(--ease-out); }
 @media (hover: hover) and (pointer: fine) {
   .resume:hover svg { transform: translateY(2px); }
+}
+
+/* ───── Print: Cmd+P prints "The short version" as a one-page résumé ───── */
+@media print {
+  @page { margin: 16mm; }
+  html:root, html:root[data-theme] {
+    --bg: #fff; --fg: #000; --muted: #333; --faint-text: #555;
+    --line: #cfcfcf; --hover: transparent; --accent: #000;
+    color-scheme: light;
+  }
+  body { background: #fff; font-size: 10.5pt; line-height: 1.5; min-height: 0; }
+  .page { max-width: none; padding: 0; }
+  .js [data-enter], .js [data-reveal] { animation: none !important; opacity: 1 !important; transform: none !important; filter: none !important; }
+  .skip, .theme-toggle, .mark, .now, .hero-sub, .route, .tabs, #panel-story, .notes, .contact, .footer,
+  .resume, .unstick, .quote-chip, .quote-layer, .scribble svg { display: none !important; }
+  #panel-short { display: block !important; animation: none; }
+  .print-only { display: block; }
+  .print-contact { margin: 4pt 0 0; font-size: 10pt; color: var(--muted); }
+  .header-text { font-size: 10.5pt; }
+  .name { font-size: 20pt; line-height: 1.2; }
+  .hero { margin-top: 14pt; }
+  .hero h1 { font-size: 13pt; font-weight: 400; letter-spacing: 0; line-height: 1.3; }
+  .hero h1 em { font-size: 1.08em; }
+  .block { margin-top: 14pt; padding-top: 12pt; border-top: 1px solid var(--line); }
+  .row { padding: 9pt 0; break-inside: avoid; }
+  .row-title { font-size: 11.5pt; font-weight: 600; }
+  .row-sub, .row-proof, .row-meta { font-size: 10pt; }
+  .row-proof { max-width: none; }
+  .tags-label { margin-top: 14pt; }
+  .tags li { padding: 2pt 8pt; border: 1px solid var(--line); font-size: 9.5pt; }
 }

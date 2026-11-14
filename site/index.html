@@ -19,9 +19,8 @@
   <link rel="canonical" href="https://connorlennon.com" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="preload" href="fonts/inter-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/instrument-serif-italic-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="styles.css" />
   <script>
     document.documentElement.classList.add('js');
@@ -29,6 +28,7 @@
   </script>
 </head>
 <body>
+  <a class="skip" href="#story">Skip to the story</a>
   <main class="page" id="top">
 
     <!-- ───────────── Header ───────────── -->
@@ -51,6 +51,8 @@
         <svg class="moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
       </button>
     </header>
+    <!-- Only shows when the page is printed (Cmd+P prints "The short version" as a one-page résumé). -->
+    <p class="print-only print-contact">hello@connorlennon.com · connorlennon.com · linkedin.com/in/connorlennon</p>
 
     <!-- ───────────── Hero ───────────── -->
     <section class="hero">
@@ -80,14 +82,14 @@
     </section>
 
     <!-- ───────────── Story / Short version ───────────── -->
-    <section class="block" style="--d:380ms" data-enter="decor">
+    <section class="block" id="story" style="--d:380ms" data-enter="decor">
       <div class="tabs">
         <div class="tab-list" role="tablist" aria-label="How much time do you have?">
-          <button role="tab" aria-selected="true"  aria-controls="panel-story" id="tab-story" data-tab="story">The story</button>
-          <button role="tab" aria-selected="false" aria-controls="panel-short" id="tab-short" data-tab="short" tabindex="-1">The short version</button>
+          <button role="tab" aria-selected="true"  aria-controls="panel-story" id="tab-story" data-tab="story">The story <span class="tab-time">3 min</span></button>
+          <button role="tab" aria-selected="false" aria-controls="panel-short" id="tab-short" data-tab="short" tabindex="-1">The short version <span class="tab-time">30 sec</span></button>
         </div>
         <div class="tab-list tab-list--active" aria-hidden="true">
-          <span>The story</span><span>The short version</span>
+          <span>The story <span class="tab-time">3 min</span></span><span>The short version <span class="tab-time">30 sec</span></span>
         </div>
       </div>
 
@@ -97,7 +99,7 @@
         <div class="story">
 
           <article class="chapter" id="columbia" data-reveal data-morph="usc">
-            <p class="kicker"><span class="ch">Prologue</span> Columbia, SC</p>
+            <p class="kicker"><span class="ch">Prologue</span> Columbia, SC <button class="share" type="button" data-share="columbia" aria-label="Copy a link to this chapter"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg><span class="share-done" aria-hidden="true">Link copied</span></button></p>
             <h2>A finance kid who liked people more than spreadsheets</h2>
             <p>
               I studied finance and international business at the University of South Carolina's
@@ -108,7 +110,7 @@
           </article>
 
           <article class="chapter" id="new-york" data-reveal data-morph="brightedge">
-            <p class="kicker"><span class="ch">01</span> 2020 · New York, NY</p>
+            <p class="kicker"><span class="ch">01</span> 2020 · New York, NY <button class="share" type="button" data-share="new-york" aria-label="Copy a link to this chapter"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg><span class="share-done" aria-hidden="true">Link copied</span></button></p>
             <h2>Cold calls in a very strange year</h2>
             <p>
               My first job was in sales development at BrightEdge, starting in the spring of 2020.
@@ -123,10 +125,12 @@
               <span class="lesson-label">What it taught me</span>
               Everyone is busy. Respect their time, and get to the point.
             </blockquote>
+            <!-- DRAFT margin note, written for Connor to confirm or rewrite. Only keep it if it's true. -->
+            <aside class="hindsight"><span class="hindsight-label">In hindsight</span> My early calls were all pitch. The good ones began once I'd shown I knew their world. Credibility earned me the real question: what matters to you, and can we actually help?</aside>
           </article>
 
           <article class="chapter" id="limerick" data-reveal data-morph="cobblestone">
-            <p class="kicker"><span class="ch">02</span> 2021–2022 · Limerick, PA</p>
+            <p class="kicker"><span class="ch">02</span> 2021–2022 · Limerick, PA <button class="share" type="button" data-share="limerick" aria-label="Copy a link to this chapter"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg><span class="share-done" aria-hidden="true">Link copied</span></button></p>
             <h2>Starting something from zero</h2>
             <p>
               In 2021 I co-founded Cobblestone Capital Group, a boutique wealth management firm.
@@ -142,10 +146,12 @@
               <span class="lesson-label">What it taught me</span>
               Trust doesn't scale. You earn it one person at a time.
             </blockquote>
+            <!-- DRAFT margin note, written for Connor to confirm or rewrite. Only keep it if it's true. -->
+            <aside class="hindsight"><span class="hindsight-label">In hindsight</span> Nobody hired us for returns alone. These were busy people who wanted one worry off their plate. Earn the trust, carry the weight, and they get back to what they do best.</aside>
           </article>
 
           <article class="chapter" id="charlotte" data-reveal data-morph="brightdime">
-            <p class="kicker"><span class="ch">03</span> 2023–2025 · Charlotte, NC</p>
+            <p class="kicker"><span class="ch">03</span> 2023–2025 · Charlotte, NC <button class="share" type="button" data-share="charlotte" aria-label="Copy a link to this chapter"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg><span class="share-done" aria-hidden="true">Link copied</span></button></p>
             <h2>Learning where people get stuck</h2>
             <p>
               Next came BrightDime, a fintech startup. I started in business development and marketing,
@@ -167,10 +173,12 @@
               <span class="lesson-label">What it taught me</span>
               The data tells you where people get stuck. The people tell you why.
             </blockquote>
+            <!-- DRAFT margin note, written for Connor to confirm or rewrite. Only keep it if it's true. -->
+            <aside class="hindsight"><span class="hindsight-label">In hindsight</span> Nobody stays for a feature list. They stay when the first visit is easy and pays off quickly. Every step we cleared before that first bit of value brought more people back.</aside>
           </article>
 
           <article class="chapter chapter--now" id="truist" data-reveal data-morph="truist">
-            <p class="kicker"><span class="ch">04</span> 2025–now · Charlotte, NC</p>
+            <p class="kicker"><span class="ch">04</span> 2025–now · Charlotte, NC <button class="share" type="button" data-share="truist" aria-label="Copy a link to this chapter"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg><span class="share-done" aria-hidden="true">Link copied</span></button></p>
             <h2>Making a big bank feel a little faster</h2>
             <p>
               Today I'm a Senior Consultant (AVP) on Truist's Client Experience and Digital team.
@@ -204,8 +212,10 @@
             </p>
             <blockquote class="lesson">
               <span class="lesson-label">What it's teaching me</span>
-              Sometimes the best product is just a shorter wait.
+              The slow part is rarely where the problem starts.
             </blockquote>
+            <!-- DRAFT margin note, written for Connor to confirm or rewrite. Only keep it if it's true. -->
+            <aside class="hindsight"><span class="hindsight-label">In hindsight</span> The slow decisions were a symptom. The cause sat upstream, in what we asked for on day one. Fix the first step and everything after it runs smoother.</aside>
           </article>
 
           <article class="chapter chapter--next" id="next" data-reveal>
@@ -230,21 +240,25 @@
             <span class="row-title">Truist</span>
             <span class="row-sub">Operations &amp; Program Mgmt Senior Consultant (AVP), Client Experience and Digital</span>
             <span class="row-meta">2025 — Now</span>
+            <span class="row-proof">Cut the median wait for a decision from 39 to 19 days, gave 650+ people a view of where their requests stood, helped evaluate around 100 product ideas, and piloted a GenAI intake assistant.</span>
           </li>
           <li class="row" data-morph="brightdime">
             <span class="row-title">BrightDime</span>
             <span class="row-sub">Customer Experience Manager, before that Business Development &amp; Marketing</span>
             <span class="row-meta">2023 — 2025</span>
+            <span class="row-proof">98% client retention across 50+ business clients, +10.6% monthly active users, $90K+ in new annual recurring revenue, +139% website traffic.</span>
           </li>
           <li class="row" data-morph="cobblestone">
             <span class="row-title">Cobblestone Capital Group</span>
             <span class="row-sub">Co-Founder &amp; Financial Advisor</span>
             <span class="row-meta">2021 — 2022</span>
+            <span class="row-proof">Grew from $0 to $1.5M+ under management with 10 new clients. Series 7 and 66.</span>
           </li>
           <li class="row" data-morph="brightedge">
             <span class="row-title">BrightEdge</span>
             <span class="row-sub">Sales Development Representative</span>
             <span class="row-meta">2020</span>
+            <span class="row-proof">Built $350K+ of qualified pipeline.</span>
           </li>
           <li class="row" data-morph="usc">
             <span class="row-title">University of South Carolina</span>
@@ -266,11 +280,58 @@
       </div>
     </section>
 
+    <!-- ───────────── Notes ─────────────
+         DRAFTS: these four pieces were written for Connor to edit. Rewrite them in your own words,
+         swap in real examples, or delete the whole section. Each note is one <details> block. -->
+    <section class="block notes" id="notes" data-reveal>
+      <h2 class="section-title">Notes on stuck spots</h2>
+      <p class="section-sub">Four short ones, on things I keep noticing.</p>
+
+      <details class="note">
+        <summary><span class="note-title">Credibility comes before curiosity</span><span class="note-time">1 min</span></summary>
+        <div class="note-body">
+          <p>Ask a busy person what matters most to them and you'll usually get the polite answer. The real one comes later, and only once they've decided you're worth telling.</p>
+          <p>What changes their mind is rarely a claim about yourself. It's a detail. You mention something specific about their business, their week, the thing their competitor just did, and you can watch them recalibrate. You've done the reading. Now your questions sound like interest and not a script.</p>
+          <p>The same thing happens outside sales. A user interview goes deeper once the person can tell you've used the product. A stakeholder opens up once you can describe their problem in their own words. Credibility isn't the point of the conversation. It's the price of admission to the useful part, where you find out what they need and whether you can honestly help with it.</p>
+        </div>
+      </details>
+
+      <details class="note">
+        <summary><span class="note-title">Take something off their plate</span><span class="note-time">1 min</span></summary>
+        <div class="note-body">
+          <p>The people most worth working with tend to have the least spare attention. They're good at one thing, and everything else in their life competes with it.</p>
+          <p>So the offer that lands is seldom "here is more." More information, more options, more meetings are all things they now have to manage. The offer that lands is "here is one thing you no longer have to think about." A decision already narrowed to two choices. A summary they can trust without checking. A problem that gets handled and reported, not escalated.</p>
+          <p>Trust builds the same way, in small deposits. You say what you'll do, you do it, and you make it easy to see that it's done. After enough of those, people stop checking, and that's the real gift: they get their attention back for the work only they can do.</p>
+        </div>
+      </details>
+
+      <details class="note">
+        <summary><span class="note-title">The first few minutes decide the rest</span><span class="note-time">1 min</span></summary>
+        <div class="note-body">
+          <p>Watch someone use a product for the first time and you can usually tell whether they'll be back. It has little to do with how much the product can do. It comes down to how long it takes before it does something for them.</p>
+          <p>Every step in front of that moment is a toll: the account to create, the form to finish, the tour to click through, the setting nobody explained. Each one is reasonable on its own. Together they add up to a person doing work on faith, and faith runs out fast.</p>
+          <p>The experiences people return to tend to flip the order. They give you something first, then ask for what they need. Easier is part of it, but it isn't the whole of it. The first visit should leave someone a little better off than they arrived, quickly enough that they notice. That's what brings them back.</p>
+        </div>
+      </details>
+
+      <details class="note">
+        <summary><span class="note-title">Fix it upstream</span><span class="note-time">1 min</span></summary>
+        <div class="note-body">
+          <p>Most recurring problems are downstream of something. The late decision started as an unclear request. The support ticket started as a confusing screen. The meeting that keeps getting scheduled started as a question nobody wrote down the answer to.</p>
+          <p>It's tempting to get very good at handling the symptom. Faster responses, better templates, a dashboard of everything that's overdue. All of that is real work and it does help, but the queue keeps refilling because nothing has changed where the work comes from.</p>
+          <p>The better question is what had to be true for this to happen at all, asked again at each step until you reach a spot where one small change removes the whole category. That fix is usually modest and unglamorous: a clearer question on a form, a default that's right most of the time. Change it once and everything after it gets easier.</p>
+        </div>
+      </details>
+    </section>
+
     <!-- ───────────── Contact ───────────── -->
     <section class="block contact" id="contact" data-reveal>
       <h2 class="contact-title">Say hi</h2>
+      <!-- DRAFT: says what Connor most wants to hear about. Edit to match what you're actually after. -->
       <p>
-        Whether it's a role, a stuck process, or just a good conversation about product, my inbox is open.
+        What I'm after is work that makes experiences better: easier to use, more enjoyable, and more
+        valuable for the people on the other end. If that's what you're building, whether it's
+        a role, a stuck process, or just a good conversation, my inbox is open.
         Or highlight any line in the story above and send it to me.
       </p>
       <div class="actions">
@@ -303,6 +364,15 @@
       <a class="sig" href="#top" aria-label="Back to top">Connor <span aria-hidden="true">↑</span></a>
     </footer>
   </main>
+
+  <!-- Shown once, by main.js, if a visitor seems lost (scrolling back and forth, or idling at the very bottom). -->
+  <aside class="unstick" aria-label="Shortcuts" hidden>
+    <p role="status">Looking for something?</p>
+    <a href="Connor_Lennon_Resume.pdf" target="_blank" rel="noopener">Résumé</a>
+    <a href="mailto:hello@connorlennon.com">Email</a>
+    <button type="button" data-unstick="short">The short version</button>
+    <button class="unstick-close" type="button" aria-label="Dismiss"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </aside>
 
   <script src="main.js" defer></script>
 </body>

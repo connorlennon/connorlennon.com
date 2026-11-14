@@ -447,3 +447,94 @@ addEventListener('resize', clearQuote);
 addEventListener('keydown', (e) => { if (e.key === 'Escape') clearQuote(); });
 tabs.forEach((t) => t.addEventListener('click', clearQuote));
 
+/* ───── Copy a link to one chapter ─────
+   /truist/, /limerick/ … are tiny pages with their own link preview that send you on to the chapter. */
+document.querySelectorAll('.share').forEach((btn) => {
+  let timer;
+  btn.addEventListener('click', () => {
+    const url = `${location.origin}/${btn.dataset.share}/`;
+    const ok = legacyCopy(url);
+    navigator.clipboard?.writeText(url).catch(() => {});
+    if (!ok && !navigator.clipboard) return;
+    btn.dataset.state = 'done';
+    status.textContent = 'Link to this chapter copied';
+    clearTimeout(timer);
+    timer = setTimeout(() => { btn.dataset.state = 'idle'; status.textContent = ''; }, 1800);
+  });
+});
+
+/* ───── "Looking for something?" ─────
+   The site's own stuck spot: if a visitor scrolls back and forth, or sits at the very bottom
+   doing nothing, offer the three things people usually came for. Once per visit, never modal. */
+const unstick = document.querySelector('.unstick');
+let unstickSeen = false;
+try { unstickSeen = sessionStorage.getItem('unstick') === '1'; } catch {}
+let unstickHide;
+let idleTimer;
+
+function hideUnstick() {
+  clearTimeout(unstickHide);
+  unstick.classList.remove('is-on');
+  setTimeout(() => { unstick.hidden = true; }, 260);
+}
+function showUnstick() {
+  if (unstickSeen || quoteText) return;
+  unstickSeen = true;
+  try { sessionStorage.setItem('unstick', '1'); } catch {}
+  clearTimeout(idleTimer);
+  unstick.hidden = false;
+  void unstick.offsetWidth;
+  unstick.classList.add('is-on');
+  // It leaves by itself unless you're pointing at it or tabbing through it.
+  const leaveLater = () => {
+    unstickHide = setTimeout(() => {
+      if (unstick.matches(':hover, :focus-within')) leaveLater(); else hideUnstick();
+    }, 16_000);
+  };
+  leaveLater();
+}
+unstick.querySelector('.unstick-close').addEventListener('click', hideUnstick);
+unstick.querySelectorAll('a').forEach((a) => a.addEventListener('click', hideUnstick));
+unstick.querySelector('[data-unstick="short"]').addEventListener('click', () => {
+  hideUnstick();
+  const shortTab = tabs[1];
+  if (shortTab.getAttribute('aria-selected') !== 'true') select(shortTab, { instant: reduceMotion.matches });
+  tabsEl.scrollIntoView({ behavior: reduceMotion.matches ? 'instant' : 'smooth', block: 'start' });
+  shortTab.focus({ preventScroll: true });
+});
+addEventListener('keydown', (e) => { if (e.key === 'Escape' && !unstick.hidden) hideUnstick(); });
+
+// Sign one: four real changes of direction within twelve seconds.
+let lastY = scrollY;
+let turnY = scrollY;
+let heading = 0;
+let turns = [];
+// Sign two: twenty-five seconds of nothing at the very bottom of the page.
+const armIdle = () => {
+  clearTimeout(idleTimer);
+  if (unstickSeen) return;
+  idleTimer = setTimeout(() => {
+    const atBottom = innerHeight + scrollY >= root.scrollHeight - 40;
+    if (atBottom && document.visibilityState === 'visible') showUnstick();
+  }, 25_000);
+};
+addEventListener('scroll', () => {
+  if (unstickSeen) return;
+  armIdle();
+  const y = scrollY;
+  const dir = Math.sign(y - lastY);
+  lastY = y;
+  if (!dir || dir === heading) return;
+  // Only count a turn after a decent run in the previous direction (not a wobble).
+  if (heading && Math.abs(y - turnY) > 320) {
+    const now = performance.now();
+    turns = turns.filter((t) => now - t < 12_000);
+    turns.push(now);
+    if (turns.length >= 4) showUnstick();
+  }
+  heading = dir;
+  turnY = y;
+}, { passive: true });
+['pointerdown', 'keydown'].forEach((type) => addEventListener(type, armIdle, { passive: true }));
+armIdle();
+
