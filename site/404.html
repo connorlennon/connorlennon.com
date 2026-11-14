@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Stuck · Connor Lennon</title>
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fbfaf7" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c0c0d" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <script>
+    document.documentElement.classList.add('js');
+    try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch {}
+  </script>
+</head>
+<body>
+  <main class="lost">
+    <span class="mark" aria-hidden="true" data-enter="support">
+      <svg viewBox="0 0 32 32">
+        <path class="knot" pathLength="1" d="M4 22C9 22 13 20 15.5 16S18.5 7 15 7 12 12.5 15.5 15.5 23 17 28 11" />
+      </svg>
+    </span>
+    <h1 data-enter="lead" style="--d:120ms">Well, this is a stuck spot.</h1>
+    <p data-enter="support" style="--d:220ms">This page doesn't exist. Ironic, given what I do. Let me get you unstuck.</p>
+    <a class="btn" href="/" data-enter="decor" style="--d:320ms">Take me home <span aria-hidden="true">→</span></a>
+  </main>
+</body>
+</html>

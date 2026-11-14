@@ -9,12 +9,15 @@ the 39 → 19 day demo, "The short version" list, and contact. The email is the 
 ## Run locally
     python3 -m http.server 4321 -d site
 
-## Deploy (Vercel)
-    npx vercel deploy site --prod
-Then in Vercel → Project → Settings → Domains, add `connorlennon.com` and `www.connorlennon.com`,
-and set the DNS records it shows at your registrar (A `76.76.21.21` for the apex, CNAME `cname.vercel-dns.com` for www).
+## Deploy
+Push to `main` on GitHub (GitHub Desktop → Commit → Push origin). Cloudflare picks it up and
+redeploys connorlennon.com in about a minute. `wrangler.jsonc` in the repo root tells it to serve this folder.
 
-Netlify or Cloudflare Pages work the same way: drag the `site` folder in, then add the custom domain.
+## Brand
+- The mark is a knot in a line (`.mark` in the header, `favicon.svg`, `apple-touch-icon.png`). Hover it and it comes loose.
+- Warm paper `#fbfaf7`, ink `#141413`, marker coral `#e2553a` (`#ff7a5c` in dark mode).
+- Inter for reading, Instrument Serif italic for the human moments (chapter titles, lessons, signature).
+- `og.png` is the link preview for LinkedIn, iMessage and Slack. `404.html` is the "stuck spot" page.
 
 ## Design notes (from emilkowalski/skills)
 - Custom `ease-out` / `ease-in-out` curves; transitions list exact properties (never `all`).
@@ -26,4 +29,5 @@ Netlify or Cloudflare Pages work the same way: drag the `site` folder in, then a
 - `tabular-nums` on the clock and dates; absolute dates for writing.
 - Theme toggle is instant (transitions disabled for that frame).
 - `prefers-reduced-motion`: opacity only, no movement.
+- The dock tracks your chapter while reading; stats count up once; marker highlights sweep in as each chapter is read.
 - Mobile floor: `viewport-fit=cover`, safe-area padding, `svh`, per-scheme `theme-color`, no tap highlight.

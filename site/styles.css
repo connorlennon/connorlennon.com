@@ -116,14 +116,41 @@ a { color: inherit; }
 
 /* ───── Header ───── */
 .header { display: flex; align-items: center; gap: 12px; }
-.avatar {
-  flex-shrink: 0;
-  width: 40px; height: 40px; border-radius: 999px;
-  display: grid; place-items: center;
-  background: var(--fg); color: var(--bg);
-  font-size: 13px; font-weight: 600;
+.brand {
+  flex: 1; min-width: 0;
+  display: flex; align-items: center; gap: 12px;
+  text-decoration: none;
+  border-radius: 14px;
 }
-.header-text { flex: 1; min-width: 0; line-height: 1.35; font-size: 14px; }
+.brand:active .mark { transform: scale(0.94); }
+
+/* The mark: a knot in a line. It comes loose on hover. */
+.mark {
+  flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: 12px;
+  display: grid; place-items: center;
+  background: var(--fg);
+  transition: transform 160ms var(--ease-out);
+}
+.mark svg { width: 28px; height: 28px; overflow: visible; }
+.mark path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  transition: stroke-dashoffset 420ms var(--ease-in-out);
+}
+.mark .knot  { stroke-dashoffset: 0; }
+.mark .loose { stroke-dashoffset: 1; }
+.brand.is-loose .mark .knot  { stroke-dashoffset: -1; }
+.brand.is-loose .mark .loose { stroke-dashoffset: 0; transition-delay: 120ms; }
+
+.header-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.35; font-size: 14px; }
+.header-text .muted { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 400px) { .header-text .muted { font-size: 13px; } }
+.nobr { white-space: nowrap; }
 .name { margin: 0; font-weight: 600; letter-spacing: -0.01em; }
 
 .icon-btn {
@@ -146,6 +173,16 @@ a { color: inherit; }
 
 /* ───── Hero ───── */
 .hero { margin-top: 56px; }
+.now {
+  display: inline-flex; align-items: center; gap: 9px;
+  margin: 0 0 20px;
+  padding: 5px 12px 5px 10px;
+  border-radius: 999px;
+  background: var(--hover);
+  font-size: 13px; color: var(--muted);
+}
+.now .dot { animation: breathe 2.8s ease-in-out infinite; }
+@keyframes breathe { 50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--live) 8%, transparent); } }
 .hero h1 {
   margin: 0;
   font-size: clamp(30px, 7.2vw, 42px);
@@ -161,7 +198,16 @@ a { color: inherit; }
   font-size: 1.1em;
   letter-spacing: -0.015em;
 }
-.scribble { position: relative; white-space: nowrap; }
+.scribble { position: relative; display: inline-block; white-space: nowrap; transform-origin: 50% 80%; cursor: default; }
+/* Poke the word and it jiggles like it's stuck, then the line redraws. */
+@keyframes jiggle {
+  20% { transform: rotate(-4deg); }
+  40% { transform: rotate(3deg) translateX(1px); }
+  60% { transform: rotate(-2deg); }
+  80% { transform: rotate(1deg); }
+}
+.scribble.is-jiggling { animation: jiggle 480ms var(--ease-out); }
+.scribble.is-jiggling path { animation: draw 600ms var(--ease-out) 300ms both; }
 .scribble svg {
   position: absolute;
   left: -2%; bottom: -0.12em;
@@ -221,8 +267,12 @@ a { color: inherit; }
   border-color: var(--accent);
   box-shadow: 0 0 0 4px var(--accent-soft);
 }
+.route a { gap: 0; }
+.stop { margin-bottom: 8px; }
 .city { font-size: 13px; color: var(--muted); transition: color 150ms ease; }
 .route [aria-current] .city { color: var(--fg); font-weight: 500; }
+.co { font-size: 11.5px; color: var(--faint); line-height: 1.3; }
+@media (max-width: 480px) { .co { display: none; } }
 
 /* ───── Tabs (clip-path duplicate technique) ───── */
 .block { margin-top: 72px; }
@@ -300,6 +350,36 @@ a { color: inherit; }
   text-wrap: balance;
 }
 .chapter p { margin: 0 0 14px; color: var(--muted); max-width: 65ch; text-wrap: pretty; }
+
+/* Marker highlights: swept in by hand once the chapter is read. */
+.chapter mark {
+  color: var(--fg);
+  background: linear-gradient(var(--accent-soft), var(--accent-soft)) no-repeat 0 88% / 100% 0.5em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding: 0 2px;
+  margin: 0 -2px;
+  border-radius: 2px;
+}
+.js .chapter mark {
+  background-size: 0% 0.5em;
+  transition: background-size 900ms var(--ease-in-out) 450ms;
+}
+.js .chapter.is-in mark { background-size: 100% 0.5em; }
+
+.next-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 6px;
+  font-size: 14.5px; font-weight: 500;
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+  transition: transform 160ms var(--ease-out), text-underline-offset 200ms var(--ease-out);
+}
+.next-link span { display: inline-block; transition: transform 200ms var(--ease-out); }
+.next-link:active { transform: scale(0.97); }
 
 .stats {
   list-style: none; padding: 0;
@@ -462,10 +542,90 @@ a { color: inherit; }
 .footer {
   margin-top: 72px; padding-top: 20px;
   border-top: 1px solid var(--line);
-  display: flex; justify-content: space-between; align-items: baseline;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
   font-size: 13px; color: var(--faint);
 }
-.sig { font-family: var(--serif); font-style: italic; font-size: 24px; color: var(--muted); }
+.footer-left { display: flex; flex-direction: column; line-height: 1.5; }
+.sig {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  padding: 2px 8px; margin-right: -8px;
+  border-radius: 10px;
+  font-family: var(--serif); font-style: italic; font-size: 26px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: transform 160ms var(--ease-out), color 150ms ease;
+}
+.sig span { font-family: var(--font); font-style: normal; font-size: 13px; opacity: 0; transform: translateY(3px); transition: opacity 150ms ease, transform 200ms var(--ease-out); }
+.sig:active { transform: scale(0.97); }
+.sig:focus-visible span { opacity: 1; transform: none; }
+
+/* ───── Dock: "you are here" while reading the story ───── */
+.dock {
+  position: fixed;
+  left: 50%; bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 10;
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 16px 4px 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: var(--card-shadow);
+  transform: translate(-50%, 12px) scale(0.96);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 220ms var(--ease-out);
+}
+.dock[hidden] { display: flex; } /* hidden is used only until JS builds it */
+.dock.is-on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; transition-duration: 240ms, 360ms; }
+.dock-track { position: relative; display: flex; }
+.dock-line {
+  position: absolute; left: 14px; right: 14px; top: 50%;
+  height: 1.5px; margin-top: -0.75px;
+  background: var(--line);
+  overflow: hidden;
+}
+.dock-fill {
+  position: absolute; inset: 0;
+  background: var(--accent);
+  transform-origin: left;
+  transform: scaleX(var(--p, 0));
+}
+.dock-stop {
+  position: relative;
+  width: 28px; height: 32px;
+  display: grid; place-items: center;
+  border: 0; padding: 0; background: none;
+  cursor: pointer;
+}
+.dock-stop::after {
+  content: "";
+  width: 7px; height: 7px; border-radius: 999px;
+  background: var(--card);
+  border: 1.5px solid var(--faint);
+  transition: background-color 200ms ease, border-color 200ms ease, transform 300ms var(--ease-out);
+}
+.dock-stop.is-past::after { background: var(--accent); border-color: var(--accent); }
+.dock-stop[aria-current="step"]::after { background: var(--accent); border-color: var(--accent); transform: scale(1.45); }
+.dock-stop:active::after { transform: scale(0.85); }
+.dock-labels { display: grid; font-size: 13px; font-weight: 500; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.dock-labels > span {
+  grid-area: 1 / 1;
+  transition: opacity 200ms ease, transform 280ms var(--ease-out), filter 200ms ease;
+}
+.dock-labels > .is-before { opacity: 0; transform: translateY(-7px); filter: blur(2px); }
+.dock-labels > .is-after  { opacity: 0; transform: translateY(7px);  filter: blur(2px); }
+
+/* Leave room so the dock never covers the last lines of the page. */
+.js body { padding-bottom: 56px; }
+
+/* ───── 404 ───── */
+.lost { min-height: 100svh; display: grid; place-content: center; text-align: center; padding: 24px; }
+.lost .mark { width: 72px; height: 72px; border-radius: 20px; margin: 0 auto 28px; }
+.lost .mark svg { width: 50px; height: 50px; }
+.lost h1 { margin: 0 0 10px; font-family: var(--serif); font-weight: 400; font-size: clamp(34px, 8vw, 48px); line-height: 1.05; letter-spacing: -0.01em; }
+.lost p { margin: 0 auto 26px; max-width: 34ch; color: var(--muted); }
+.lost .btn { margin: 0 auto; }
 
 /* ───── Hover: fine pointers only ───── */
 @media (hover: hover) and (pointer: fine) {
@@ -475,6 +635,15 @@ a { color: inherit; }
   .route a:hover .stop { border-color: var(--fg); }
   .btn--ghost:hover { color: var(--fg); background: var(--hover); }
   .btn--ghost:hover span { transform: translate(1px, -1px); }
+  .btn:not(.btn--ghost):hover { box-shadow: var(--card-shadow), 0 10px 28px -14px rgba(20, 20, 19, 0.28); }
+  .route a:hover .co { color: var(--muted); }
+  .scribble { cursor: pointer; }
+  .next-link:hover { text-underline-offset: 6px; }
+  .next-link:hover span { transform: translateY(2px); }
+  .sig:hover { color: var(--fg); }
+  .sig:hover span { opacity: 1; transform: none; }
+  .dock-stop:hover::after { border-color: var(--fg); }
+  .dock-stop.is-past:hover::after, .dock-stop[aria-current="step"]:hover::after { border-color: var(--accent); }
 }
 
 /* ───── Page entrance: one per container, non-uniform delays ───── */
@@ -489,6 +658,10 @@ a { color: inherit; }
 /* The underline draws once the headline has landed. */
 @keyframes draw { from { stroke-dashoffset: 1; } }
 .js .scribble path { animation: draw 700ms var(--ease-out) 750ms both; }
+
+/* The mark ties its knot on arrival. */
+.js .header .mark .knot { animation: draw 900ms var(--ease-in-out) 200ms both; }
+.js .lost .mark .knot { animation: draw 1100ms var(--ease-in-out) 150ms both; }
 
 /* The road draws left → right, each stop lights up as it's reached. */
 @keyframes road { from { clip-path: inset(0 100% 0 0); } }
@@ -518,4 +691,8 @@ a { color: inherit; }
   .n, .copy-content > span, .copy-icon .i-copy, .copy-icon .i-check { transform: none !important; filter: none !important; }
   .bar .fill { transition: none; }
   .tab-list--active { transition-duration: 0ms; }
+  .js .header .mark .knot, .js .lost .mark .knot, .now .dot, .scribble.is-jiggling, .scribble.is-jiggling path { animation: none; }
+  .js .chapter mark { transition: none; background-size: 100% 0.5em; }
+  .dock, .dock.is-on { transform: translateX(-50%); }
+  .dock-labels > span { transform: none !important; filter: none !important; }
 }

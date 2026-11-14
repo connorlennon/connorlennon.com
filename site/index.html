@@ -4,15 +4,21 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
   <title>Connor Lennon</title>
-  <meta name="description" content="Connor Lennon — I find the places where people get stuck, and get them unstuck. Product and operations in Charlotte, NC." />
+  <meta name="description" content="Connor Lennon finds the places where people get stuck, and gets them unstuck. Product and operations in Charlotte, NC." />
   <meta property="og:title" content="Connor Lennon" />
   <meta property="og:description" content="I find the places where people get stuck, and get them unstuck." />
   <meta property="og:url" content="https://connorlennon.com" />
   <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://connorlennon.com/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Connor Lennon: I find the places where people get stuck, and get them unstuck." />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fbfaf7" />
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c0c0d" />
   <link rel="canonical" href="https://connorlennon.com" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23111'/><text x='16' y='21.5' font-family='system-ui' font-size='15' font-weight='600' fill='white' text-anchor='middle'>CL</text></svg>" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
@@ -23,15 +29,23 @@
   </script>
 </head>
 <body>
-  <main class="page">
+  <main class="page" id="top">
 
     <!-- ───────────── Header ───────────── -->
     <header class="header" style="--d:0ms" data-enter="support">
-      <div class="avatar" aria-hidden="true">CL</div>
-      <div class="header-text">
-        <p class="name">Connor Lennon</p>
-        <p class="muted">Product &amp; operations · Charlotte, NC</p>
-      </div>
+      <a class="brand" href="#top" aria-label="Connor Lennon, back to top">
+        <!-- The mark: a knot in a line. Hover it and it comes loose. -->
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32">
+            <path class="knot" pathLength="1" d="M4 22C9 22 13 20 15.5 16S18.5 7 15 7 12 12.5 15.5 15.5 23 17 28 11" />
+            <path class="loose" pathLength="1" d="M4 21.5C12 21 20 16 28 10.5" />
+          </svg>
+        </span>
+        <span class="header-text">
+          <span class="name">Connor Lennon</span>
+          <span class="muted">Product &amp; operations · Charlotte, NC</span>
+        </span>
+      </a>
       <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">
         <svg class="sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
         <svg class="moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -40,8 +54,12 @@
 
     <!-- ───────────── Hero ───────────── -->
     <section class="hero">
+      <p class="now" style="--d:40ms" data-enter="support">
+        <span class="dot" aria-hidden="true"></span>
+        Now making a big bank a little faster at Truist
+      </p>
       <h1 style="--d:80ms" data-enter="lead">
-        I find the places where people get <span class="scribble">stuck<svg viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M2 9.5C22 4 46 3 64 6.5S100 11 118 4"/></svg></span>,
+        I find the places where people get <span class="nobr"><span class="scribble" data-wiggle>stuck<svg viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M2 9.5C22 4 46 3 64 6.5S100 11 118 4"/></svg></span>,</span>
         and <em>get them unstuck.</em>
       </h1>
       <p class="hero-sub" style="--d:200ms" data-enter="support">
@@ -53,10 +71,10 @@
       <!-- The route: four stops, drawn once on load. Each stop jumps to its chapter. -->
       <nav class="route" aria-label="Places along the way" style="--d:300ms" data-enter="decor">
         <ol>
-          <li><a href="#columbia"><span class="stop"></span><span class="city">Columbia</span></a></li>
-          <li><a href="#new-york"><span class="stop"></span><span class="city">New York</span></a></li>
-          <li><a href="#limerick"><span class="stop"></span><span class="city">Limerick</span></a></li>
-          <li><a href="#charlotte" aria-current="location"><span class="stop"></span><span class="city">Charlotte</span></a></li>
+          <li><a href="#columbia"><span class="stop"></span><span class="city">Columbia</span><span class="co">USC</span></a></li>
+          <li><a href="#new-york"><span class="stop"></span><span class="city">New York</span><span class="co">BrightEdge</span></a></li>
+          <li><a href="#limerick"><span class="stop"></span><span class="city">Limerick</span><span class="co">Cobblestone</span></a></li>
+          <li><a href="#charlotte" aria-current="location"><span class="stop"></span><span class="city">Charlotte</span><span class="co">BrightDime, Truist</span></a></li>
         </ol>
       </nav>
     </section>
@@ -77,24 +95,25 @@
       <div class="panel" role="tabpanel" id="panel-story" aria-labelledby="tab-story">
         <div class="story">
 
-          <article class="chapter" id="columbia" data-reveal>
+          <article class="chapter" id="columbia" data-reveal data-dock="Prologue · USC">
             <p class="kicker"><span class="ch">Prologue</span> Columbia, SC</p>
             <h2>A finance kid who liked people more than spreadsheets</h2>
             <p>
               I studied finance and international business at the University of South Carolina's
               Darla Moore School of Business and graduated magna cum laude. I loved the numbers,
-              but I kept noticing that the interesting part was always the people behind them:
+              but I kept noticing that <mark>the interesting part was always the people behind them</mark>:
               why they decided what they decided, and what got in their way.
             </p>
           </article>
 
-          <article class="chapter" id="new-york" data-reveal>
+          <article class="chapter" id="new-york" data-reveal data-dock="01 · BrightEdge">
             <p class="kicker"><span class="ch">01</span> 2020 · New York, NY</p>
             <h2>Cold calls in a very strange year</h2>
             <p>
               My first job was in sales development at BrightEdge, starting in the spring of 2020.
-              It was a strange time to start anything. My whole job was getting busy strangers to
-              give me a few minutes, and by the end I'd built more than $350K of qualified pipeline.
+              It was a strange time to start anything. My whole job was
+              <mark>getting busy strangers to give me a few minutes</mark>, and by the end I'd built
+              more than $350K of qualified pipeline.
             </p>
             <ul class="stats">
               <li><strong>$350K+</strong><span>pipeline built</span></li>
@@ -105,14 +124,14 @@
             </blockquote>
           </article>
 
-          <article class="chapter" id="limerick" data-reveal>
+          <article class="chapter" id="limerick" data-reveal data-dock="02 · Cobblestone">
             <p class="kicker"><span class="ch">02</span> 2021–2022 · Limerick, PA</p>
             <h2>Starting something from zero</h2>
             <p>
               In 2021 I co-founded Cobblestone Capital Group, a boutique wealth management firm.
               No clients, no assets, no logo anyone recognized. I earned my Series 7 and 66,
               did the research, made the calls, and we grew to more than $1.5M under management
-              with 10 new clients, one conversation at a time.
+              with 10 new clients, <mark>one conversation at a time</mark>.
             </p>
             <ul class="stats">
               <li><strong>$0 → $1.5M+</strong><span>assets under management</span></li>
@@ -124,7 +143,7 @@
             </blockquote>
           </article>
 
-          <article class="chapter" id="charlotte" data-reveal>
+          <article class="chapter" id="charlotte" data-reveal data-dock="03 · BrightDime">
             <p class="kicker"><span class="ch">03</span> 2023–2025 · Charlotte, NC</p>
             <h2>Learning where people get stuck</h2>
             <p>
@@ -135,8 +154,8 @@
             </p>
             <p>
               Then I moved into customer experience and looked after 50+ business clients.
-              I spent a lot of time in the feedback and usage data, finding exactly where people
-              dropped off during signup and onboarding, then fixing those spots.
+              I spent a lot of time in the feedback and usage data, finding
+              <mark>exactly where people dropped off</mark> during signup and onboarding, then fixing those spots.
             </p>
             <ul class="stats">
               <li><strong>98%</strong><span>client retention</span></li>
@@ -149,15 +168,15 @@
             </blockquote>
           </article>
 
-          <article class="chapter chapter--now" id="truist" data-reveal>
+          <article class="chapter chapter--now" id="truist" data-reveal data-dock="04 · Truist">
             <p class="kicker"><span class="ch">04</span> 2025–now · Charlotte, NC</p>
             <h2>Making a big bank feel a little faster</h2>
             <p>
               Today I'm a Senior Consultant (AVP) on Truist's Client Experience and Digital team.
               Every new digital product idea starts with an intake request, and those requests
               were waiting more than a month for a decision. So I redesigned the form and the process
-              behind it, added automatic status updates, and built a dashboard so 650+ people
-              could finally see where their requests stood.
+              behind it, added automatic status updates, and built a dashboard so
+              <mark>650+ people could finally see where their requests stood</mark>.
             </p>
 
             <!-- Interactive: the wait shrinking. Plays once on view, then it's yours. -->
@@ -188,7 +207,7 @@
             </blockquote>
           </article>
 
-          <article class="chapter chapter--next" data-reveal>
+          <article class="chapter chapter--next" id="next" data-reveal data-dock="Next · You?">
             <p class="kicker"><span class="ch">∞</span> Next</p>
             <h2>Still looking for the stuck spots</h2>
             <p>
@@ -197,6 +216,7 @@
               it's a form, a dashboard, or one well-timed email. If you're working on something
               like that, I'd love to hear about it.
             </p>
+            <a class="next-link" href="#contact">Start a conversation <span aria-hidden="true">↓</span></a>
           </article>
 
         </div>
@@ -241,7 +261,7 @@
     </section>
 
     <!-- ───────────── Contact ───────────── -->
-    <section class="block contact" data-reveal>
+    <section class="block contact" id="contact" data-reveal>
       <h2 class="contact-title">Say hi</h2>
       <p>
         Whether it's a role, a stuck process, or just a good conversation about product, my inbox is open.
@@ -268,10 +288,21 @@
     </section>
 
     <footer class="footer">
-      <span>© <span class="year">2026</span> Connor Lennon</span>
-      <span class="sig" aria-hidden="true">Connor</span>
+      <div class="footer-left">
+        <span>© <span class="year">2026</span> Connor Lennon</span>
+        <span>Made by hand in Charlotte, NC</span>
+      </div>
+      <a class="sig" href="#top" aria-label="Back to top">Connor <span aria-hidden="true">↑</span></a>
     </footer>
   </main>
+
+  <!-- Floating "you are here" for the story. Built from the chapters by main.js. -->
+  <nav class="dock" aria-label="Chapters" hidden>
+    <div class="dock-track">
+      <span class="dock-line" aria-hidden="true"><span class="dock-fill"></span></span>
+    </div>
+    <span class="dock-labels" aria-hidden="true"></span>
+  </nav>
 
   <script src="main.js" defer></script>
 </body>

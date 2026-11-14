@@ -76,13 +76,57 @@ const reclip = () => {
 document.fonts?.ready.then(reclip);
 addEventListener('resize', reclip);
 
+/* ───── The mark comes loose on hover (or a tap) ───── */
+const brand = document.querySelector('.brand');
+brand.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') brand.classList.add('is-loose'); });
+brand.addEventListener('pointerleave', () => brand.classList.remove('is-loose'));
+brand.addEventListener('focus', () => brand.classList.add('is-loose'));
+brand.addEventListener('blur', () => brand.classList.remove('is-loose'));
+
+/* ───── Poke "stuck" ───── */
+const stuck = document.querySelector('[data-wiggle]');
+const jiggle = () => {
+  if (reduceMotion.matches || stuck.classList.contains('is-jiggling')) return;
+  stuck.classList.add('is-jiggling');
+  setTimeout(() => stuck.classList.remove('is-jiggling'), 950);
+};
+stuck.addEventListener('click', jiggle);
+stuck.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') jiggle(); });
+
+/* ───── Stats count up the first time you see them ───── */
+function countUp(el) {
+  const text = el.textContent;
+  const m = text.match(/(\d+(?:\.\d+)?)(?!.*\d)/); // the last number in the label
+  if (!m || reduceMotion.matches) return;
+  const target = parseFloat(m[1]);
+  const decimals = (m[1].split('.')[1] || '').length;
+  const before = text.slice(0, m.index);
+  const after = text.slice(m.index + m[1].length);
+  el.style.minWidth = `${el.offsetWidth}px`; // final width up front, so neighbors never shift
+  const start = performance.now() + 250;
+  const dur = 1100;
+  const frame = (now) => {
+    const t = Math.min(1, Math.max(0, (now - start) / dur));
+    const eased = 1 - Math.pow(1 - t, 4);
+    el.textContent = before + (target * eased).toFixed(decimals) + after;
+    if (t < 1) requestAnimationFrame(frame);
+  };
+  el.textContent = before + (0).toFixed(decimals) + after;
+  requestAnimationFrame(frame);
+}
+
 /* ───── Chapters reveal once as they enter ───── */
+const reveal = (el) => {
+  if (el.classList.contains('is-in')) return;
+  el.classList.add('is-in');
+  el.querySelectorAll('.stats strong').forEach(countUp);
+};
 const revealables = document.querySelectorAll('[data-reveal]');
 if ('IntersectionObserver' in window) {
   const io = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-      entry.target.classList.add('is-in');
+      reveal(entry.target);
       io.unobserve(entry.target);
     });
   }, { rootMargin: '0px 0px -12% 0px' });
@@ -91,7 +135,60 @@ if ('IntersectionObserver' in window) {
   revealables.forEach((el) => el.classList.add('is-in'));
 }
 // Jumping from the route straight to a chapter: show it immediately.
-addEventListener('hashchange', () => document.querySelector(location.hash)?.classList.add('is-in'));
+addEventListener('hashchange', () => {
+  const el = location.hash.length > 1 && document.querySelector(location.hash);
+  if (el?.hasAttribute('data-reveal')) reveal(el);
+});
+
+/* ───── Dock: where you are in the story ───── */
+const dock = document.querySelector('.dock');
+const chapters = [...document.querySelectorAll('[data-dock]')];
+const track = dock.querySelector('.dock-track');
+const labelsEl = dock.querySelector('.dock-labels');
+const storyPanel = document.getElementById('panel-story');
+const contact = document.getElementById('contact');
+
+const stops = chapters.map((ch) => {
+  const a = Object.assign(document.createElement('a'), { className: 'dock-stop', href: `#${ch.id}` });
+  a.setAttribute('aria-label', ch.dataset.dock);
+  a.addEventListener('click', () => reveal(ch));
+  track.append(a);
+  const label = Object.assign(document.createElement('span'), { textContent: ch.dataset.dock, className: 'is-after' });
+  labelsEl.append(label);
+  return { a, label };
+});
+dock.hidden = false;
+
+let current = -1;
+let dockTicking = false;
+function updateDock() {
+  dockTicking = false;
+  const vh = innerHeight;
+  const anchor = vh * 0.45;
+  const tops = chapters.map((ch) => ch.getBoundingClientRect().top);
+  const on = !storyPanel.hidden && tops[0] < vh * 0.7 && contact.getBoundingClientRect().top > vh * 0.75;
+  dock.classList.toggle('is-on', on);
+  dock.inert = !on;
+
+  let i = 0;
+  tops.forEach((top, k) => { if (top <= anchor) i = k; });
+  const next = tops[i + 1];
+  const frac = next === undefined ? 0 : Math.min(1, Math.max(0, (anchor - tops[i]) / (next - tops[i])));
+  dock.style.setProperty('--p', (i + frac) / (chapters.length - 1));
+
+  if (i === current) return;
+  current = i;
+  stops.forEach(({ a, label }, k) => {
+    a.classList.toggle('is-past', k < i);
+    if (k === i) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current');
+    label.className = k < i ? 'is-before' : k > i ? 'is-after' : '';
+  });
+}
+const queueDock = () => { if (!dockTicking) { dockTicking = true; requestAnimationFrame(updateDock); } };
+addEventListener('scroll', queueDock, { passive: true });
+addEventListener('resize', queueDock);
+tabs.forEach((t) => t.addEventListener('click', queueDock));
+updateDock();
 
 /* ───── The shrinking wait (39 → 19 days) ───── */
 const demo = document.querySelector('[data-demo]');
