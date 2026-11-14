@@ -93,9 +93,10 @@
 
       <!-- ── The story ── -->
       <div class="panel" role="tabpanel" id="panel-story" aria-labelledby="tab-story">
+        <!-- main.js draws the pen line down the left edge: a knot at each chapter, straight after each lesson. -->
         <div class="story">
 
-          <article class="chapter" id="columbia" data-reveal data-dock="Prologue · USC">
+          <article class="chapter" id="columbia" data-reveal data-morph="usc">
             <p class="kicker"><span class="ch">Prologue</span> Columbia, SC</p>
             <h2>A finance kid who liked people more than spreadsheets</h2>
             <p>
@@ -106,7 +107,7 @@
             </p>
           </article>
 
-          <article class="chapter" id="new-york" data-reveal data-dock="01 · BrightEdge">
+          <article class="chapter" id="new-york" data-reveal data-morph="brightedge">
             <p class="kicker"><span class="ch">01</span> 2020 · New York, NY</p>
             <h2>Cold calls in a very strange year</h2>
             <p>
@@ -124,7 +125,7 @@
             </blockquote>
           </article>
 
-          <article class="chapter" id="limerick" data-reveal data-dock="02 · Cobblestone">
+          <article class="chapter" id="limerick" data-reveal data-morph="cobblestone">
             <p class="kicker"><span class="ch">02</span> 2021–2022 · Limerick, PA</p>
             <h2>Starting something from zero</h2>
             <p>
@@ -143,7 +144,7 @@
             </blockquote>
           </article>
 
-          <article class="chapter" id="charlotte" data-reveal data-dock="03 · BrightDime">
+          <article class="chapter" id="charlotte" data-reveal data-morph="brightdime">
             <p class="kicker"><span class="ch">03</span> 2023–2025 · Charlotte, NC</p>
             <h2>Learning where people get stuck</h2>
             <p>
@@ -168,7 +169,7 @@
             </blockquote>
           </article>
 
-          <article class="chapter chapter--now" id="truist" data-reveal data-dock="04 · Truist">
+          <article class="chapter chapter--now" id="truist" data-reveal data-morph="truist">
             <p class="kicker"><span class="ch">04</span> 2025–now · Charlotte, NC</p>
             <h2>Making a big bank feel a little faster</h2>
             <p>
@@ -207,7 +208,7 @@
             </blockquote>
           </article>
 
-          <article class="chapter chapter--next" id="next" data-reveal data-dock="Next · You?">
+          <article class="chapter chapter--next" id="next" data-reveal>
             <p class="kicker"><span class="ch">∞</span> Next</p>
             <h2>Still looking for the stuck spots</h2>
             <p>
@@ -225,27 +226,27 @@
       <!-- ── The short version ── -->
       <div class="panel" role="tabpanel" id="panel-short" aria-labelledby="tab-short" hidden>
         <ul class="list">
-          <li class="row">
+          <li class="row" data-morph="truist">
             <span class="row-title">Truist</span>
             <span class="row-sub">Operations &amp; Program Mgmt Senior Consultant (AVP), Client Experience and Digital</span>
             <span class="row-meta">2025 — Now</span>
           </li>
-          <li class="row">
+          <li class="row" data-morph="brightdime">
             <span class="row-title">BrightDime</span>
             <span class="row-sub">Customer Experience Manager, before that Business Development &amp; Marketing</span>
             <span class="row-meta">2023 — 2025</span>
           </li>
-          <li class="row">
+          <li class="row" data-morph="cobblestone">
             <span class="row-title">Cobblestone Capital Group</span>
             <span class="row-sub">Co-Founder &amp; Financial Advisor</span>
             <span class="row-meta">2021 — 2022</span>
           </li>
-          <li class="row">
+          <li class="row" data-morph="brightedge">
             <span class="row-title">BrightEdge</span>
             <span class="row-sub">Sales Development Representative</span>
             <span class="row-meta">2020</span>
           </li>
-          <li class="row">
+          <li class="row" data-morph="usc">
             <span class="row-title">University of South Carolina</span>
             <span class="row-sub">B.S. Business Administration, Finance &amp; International Business, magna cum laude</span>
             <span class="row-meta">Darla Moore</span>
@@ -270,6 +271,7 @@
       <h2 class="contact-title">Say hi</h2>
       <p>
         Whether it's a role, a stuck process, or just a good conversation about product, my inbox is open.
+        Or highlight any line in the story above and send it to me.
       </p>
       <div class="actions">
         <!-- EDIT: data-email + label if you use a different address -->
@@ -301,14 +303,6 @@
       <a class="sig" href="#top" aria-label="Back to top">Connor <span aria-hidden="true">↑</span></a>
     </footer>
   </main>
-
-  <!-- Floating "you are here" for the story. Built from the chapters by main.js. -->
-  <nav class="dock" aria-label="Chapters" hidden>
-    <div class="dock-track">
-      <span class="dock-line" aria-hidden="true"><span class="dock-fill"></span></span>
-    </div>
-    <span class="dock-labels" aria-hidden="true"></span>
-  </nav>
 
   <script src="main.js" defer></script>
 </body>

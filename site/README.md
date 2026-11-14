@@ -29,5 +29,8 @@ redeploys connorlennon.com in about a minute. `wrangler.jsonc` in the repo root 
 - `tabular-nums` on the clock and dates; absolute dates for writing.
 - Theme toggle is instant (transitions disabled for that frame).
 - `prefers-reduced-motion`: opacity only, no movement.
-- The dock tracks your chapter while reading; stats count up once; marker highlights sweep in as each chapter is read.
+- The pen line (the mark's stroke) runs down the story: a knot at each chapter, a waver through it, straight from the lesson on. Ink follows your reading position.
+- Story ⇄ short version uses the View Transitions API: chapters in view fold into their résumé rows (pairs share `data-morph`). Falls back to a plain swap.
+- Select any line in the story: it gets the marker and a "Send Connor this line" chip (a pre-filled mailto).
+- Marker highlights sweep in as each chapter is read. Stats are static on purpose: numbers that just sit there read as more credible.
 - Mobile floor: `viewport-fit=cover`, safe-area padding, `svh`, per-scheme `theme-color`, no tap highlight.

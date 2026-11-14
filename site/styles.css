@@ -308,6 +308,24 @@ a { color: inherit; }
 @keyframes panel-in { from { opacity: 0; filter: blur(3px); transform: translateY(4px); } }
 .panel.is-showing { animation: panel-in 260ms var(--ease-out); }
 
+/* Story ⇄ short version: each chapter in view folds into its résumé row (and back).
+   main.js names the pairs just for the switch; without the API the panels simply swap. */
+.tabs { view-transition-name: tabs; }
+::view-transition-group(*) {
+  animation-duration: 380ms;
+  animation-timing-function: var(--ease-in-out);
+  overflow: clip;
+}
+/* Keep snapshots at their real size, pinned to the top, so text is cropped, never squashed. */
+::view-transition-old(*),
+::view-transition-new(*) { width: 100%; height: auto; }
+/* Old content leaves quickly so the two states never sit on top of each other for long. */
+::view-transition-old(*) { animation-duration: 180ms; }
+::view-transition-new(root) { animation-duration: 300ms; }
+/* The tab pill slides on its own; show it live, with no crossfade ghost. */
+::view-transition-old(tabs) { display: none; }
+::view-transition-new(tabs) { animation: none; }
+
 /* ───── Story timeline ───── */
 .story { position: relative; padding-left: 34px; }
 .story::before {
@@ -329,6 +347,22 @@ a { color: inherit; }
 }
 .chapter--now::before { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
 .chapter--next::before { border-style: dashed; }
+
+/* The pen line: the mark's stroke carried down the page. Built and drawn by main.js.
+   It knots at the top of each chapter, wavers through it, and runs straight after each lesson. */
+.spine {
+  position: absolute; left: 0; top: 0;
+  width: 34px; height: 100%;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 140px), transparent calc(100% - 30px));
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 140px), transparent calc(100% - 30px));
+}
+.spine path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.spine-track { stroke: var(--line); stroke-width: 1.5; }
+.spine-ink { stroke: var(--accent); stroke-width: 1.75; }
+.spine-start { fill: var(--accent); }
+.story.has-spine::before,
+.story.has-spine .chapter::before { display: none; }
 
 .kicker {
   margin: 0 0 8px;
@@ -489,6 +523,40 @@ a { color: inherit; }
 .tags { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .tags li { padding: 4px 11px; border-radius: 999px; background: var(--hover); font-size: 13px; color: var(--muted); }
 
+/* ───── Highlight a line, send it over ───── */
+.story ::selection { background: var(--accent-soft); color: var(--fg); }
+.quote-layer { position: absolute; top: 0; left: 0; pointer-events: none; }
+@keyframes sweep { from { transform: scaleX(0); } }
+@keyframes fade-in { from { opacity: 0; } }
+.quote-band {
+  position: absolute;
+  border-radius: 2px;
+  background: var(--accent-soft);
+  transform-origin: left;
+  animation: sweep 480ms var(--ease-in-out) calc(var(--i, 0) * 70ms) both;
+}
+.quote-chip {
+  position: absolute; z-index: 20;
+  display: inline-flex; align-items: center; gap: 7px;
+  height: 34px;
+  padding: 0 12px 0 14px;
+  border-radius: 999px;
+  background: var(--tab-active-bg);
+  color: var(--tab-active-fg);
+  box-shadow: 0 8px 22px -10px rgba(20, 20, 19, 0.5);
+  font-size: 13px; font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(4px) scale(0.96);
+  transform-origin: 50% 100%;
+  transition: opacity 160ms ease, transform 200ms var(--ease-out);
+}
+.quote-chip[hidden] { display: none; }
+.quote-chip.is-on { opacity: 1; transform: none; }
+.quote-chip.is-on:active { transform: scale(0.97); }
+.quote-chip span { display: inline-block; font-size: 12px; transition: transform 200ms var(--ease-out); }
+
 /* ───── Contact ───── */
 .contact { margin-top: 96px; }
 .contact-title {
@@ -562,66 +630,6 @@ a { color: inherit; }
 .sig:active { transform: scale(0.97); }
 .sig:focus-visible span { opacity: 1; transform: none; }
 
-/* ───── Dock: "you are here" while reading the story ───── */
-.dock {
-  position: fixed;
-  left: 50%; bottom: calc(16px + env(safe-area-inset-bottom));
-  z-index: 10;
-  display: flex; align-items: center; gap: 6px;
-  padding: 4px 16px 4px 6px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--card) 92%, transparent);
-  -webkit-backdrop-filter: blur(14px) saturate(1.4);
-  backdrop-filter: blur(14px) saturate(1.4);
-  box-shadow: var(--card-shadow);
-  transform: translate(-50%, 12px) scale(0.96);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 180ms ease, transform 220ms var(--ease-out);
-}
-.dock[hidden] { display: flex; } /* hidden is used only until JS builds it */
-.dock.is-on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; transition-duration: 240ms, 360ms; }
-.dock-track { position: relative; display: flex; }
-.dock-line {
-  position: absolute; left: 14px; right: 14px; top: 50%;
-  height: 1.5px; margin-top: -0.75px;
-  background: var(--line);
-  overflow: hidden;
-}
-.dock-fill {
-  position: absolute; inset: 0;
-  background: var(--accent);
-  transform-origin: left;
-  transform: scaleX(var(--p, 0));
-}
-.dock-stop {
-  position: relative;
-  width: 28px; height: 32px;
-  display: grid; place-items: center;
-  border: 0; padding: 0; background: none;
-  cursor: pointer;
-}
-.dock-stop::after {
-  content: "";
-  width: 7px; height: 7px; border-radius: 999px;
-  background: var(--card);
-  border: 1.5px solid var(--faint);
-  transition: background-color 200ms ease, border-color 200ms ease, transform 300ms var(--ease-out);
-}
-.dock-stop.is-past::after { background: var(--accent); border-color: var(--accent); }
-.dock-stop[aria-current="step"]::after { background: var(--accent); border-color: var(--accent); transform: scale(1.45); }
-.dock-stop:active::after { transform: scale(0.85); }
-.dock-labels { display: grid; font-size: 13px; font-weight: 500; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.dock-labels > span {
-  grid-area: 1 / 1;
-  transition: opacity 200ms ease, transform 280ms var(--ease-out), filter 200ms ease;
-}
-.dock-labels > .is-before { opacity: 0; transform: translateY(-7px); filter: blur(2px); }
-.dock-labels > .is-after  { opacity: 0; transform: translateY(7px);  filter: blur(2px); }
-
-/* Leave room so the dock never covers the last lines of the page. */
-.js body { padding-bottom: 56px; }
-
 /* ───── 404 ───── */
 .lost { min-height: 100svh; display: grid; place-content: center; text-align: center; padding: 24px; }
 .lost .mark { width: 72px; height: 72px; border-radius: 20px; margin: 0 auto 28px; }
@@ -641,12 +649,11 @@ a { color: inherit; }
   .btn:not(.btn--ghost):hover { box-shadow: var(--card-shadow), 0 10px 28px -14px rgba(20, 20, 19, 0.28); }
   .route a:hover .co { color: var(--muted); }
   .scribble { cursor: pointer; }
+  .quote-chip:hover span { transform: translate(1px, -1px); }
   .next-link:hover { text-underline-offset: 6px; }
   .next-link:hover span { transform: translateY(2px); }
   .sig:hover { color: var(--fg); }
   .sig:hover span { opacity: 1; transform: none; }
-  .dock-stop:hover::after { border-color: var(--fg); }
-  .dock-stop.is-past:hover::after, .dock-stop[aria-current="step"]:hover::after { border-color: var(--accent); }
 }
 
 /* ───── Page entrance: one per container, non-uniform delays ───── */
@@ -696,8 +703,8 @@ a { color: inherit; }
   .tab-list--active { transition-duration: 0ms; }
   .js .header .mark .knot, .js .lost .mark .knot, .now .dot, .scribble.is-jiggling, .scribble.is-jiggling path { animation: none; }
   .js .chapter mark { transition: none; background-size: 100% 0.5em; }
-  .dock, .dock.is-on { transform: translateX(-50%); }
-  .dock-labels > span { transform: none !important; filter: none !important; }
+  .quote-band { animation: fade-in 200ms ease both; }
+  .quote-chip, .quote-chip.is-on, .quote-chip:active { transform: none; }
 }
 
 /* ───── Résumé download ───── */
