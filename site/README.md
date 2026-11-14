@@ -14,8 +14,8 @@ Push to `main` on GitHub (GitHub Desktop → Commit → Push origin). Cloudflare
 redeploys connorlennon.com in about a minute. `wrangler.jsonc` in the repo root tells it to serve this folder.
 
 ## Brand
-- The mark is a knot in a line (`.mark` in the header, `favicon.svg`, `apple-touch-icon.png`). Hover it and it comes loose.
-- Warm paper `#fbfaf7`, ink `#141413`, marker coral `#e2553a` (`#ff7a5c` in dark mode).
+- The mark is "Cl" written as one unbroken pen line (`.mark` in the header, `favicon.svg`, `apple-touch-icon.png`). Hover it and it straightens out.
+- Warm paper `#fbfaf7`, ink `#141413`, ink blue `#2b59c3` (`#7c9cff` in dark mode).
 - Inter for reading, Instrument Serif italic for the human moments (chapter titles, lessons, signature).
 - `og.png` is the link preview for LinkedIn, iMessage and Slack. `404.html` is the "stuck spot" page.
 
