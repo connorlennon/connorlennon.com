@@ -1,6 +1,6 @@
 // Tells Cloudflare to serve the static files in ./site. No build step.
 {
-  "name": "connorlennon",
+  "name": "connorlennon-com",
   "compatibility_date": "2026-11-01",
   "assets": {
     "directory": "./site",
