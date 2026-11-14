@@ -696,3 +696,11 @@ a { color: inherit; }
   .dock, .dock.is-on { transform: translateX(-50%); }
   .dock-labels > span { transform: none !important; filter: none !important; }
 }
+
+/* ───── Résumé download ───── */
+.resume { margin-top: 32px; padding: 0 16px; }
+.resume-meta { font-size: 12.5px; font-weight: 400; color: var(--faint); }
+.resume svg { color: var(--muted); transition: transform 200ms var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .resume:hover svg { transform: translateY(2px); }
+}
